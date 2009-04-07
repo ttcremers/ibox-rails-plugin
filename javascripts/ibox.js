@@ -11,17 +11,15 @@ var ibAttr = "rel"; 	// our attribute identifier for our iBox elements
 	
 
 var imgPreloader = new Image(); // create an preloader object
-function init_ibox() {
+function init_ibox(with_footer) {
 	var elem_wrapper = "ibox";
-	
-	createIbox(document.getElementsByTagName("body")[0]); //create our ibox
+	createIbox(document.getElementsByTagName("body")[0], with_footer); //create our ibox
 
 	//	elements here start the look up from the start non <a> tags
 	//var docRoot = (document.all) ? document.all : document.getElementsByTagName("*");
 	
 	// Or make sure we only check <a> tags
 	var docRoot = document.getElementsByTagName("a");
-
 	var e;
 	for (var i = 0; i < docRoot.length - 1; i++) {
 			e = docRoot[i];
@@ -91,17 +89,21 @@ hideIndicator = function() {
 	ibox_p.onclick = null;
 }
 
-createIbox = function(elem) {
+createIbox = function(elem, with_footer) {
 	// a trick on just creating an ibox wrapper then doing an innerHTML on our root ibox element
 	var strHTML = "<div id=\"ibox_w\" style=\"display:none;\"></div>";
 	strHTML +=	"<div id=\"ibox_progress\" style=\"display:none;\">";
 	strHTML +=  indicator_img_html;
 	strHTML +=  "</div>";
+	
 	strHTML +=	"<div id=\"ibox_wrapper\" style=\"display:none\">";
 	strHTML +=	"<div id=\"ibox_content\"></div>";
-	strHTML +=	"<div id=\"ibox_footer_wrapper\"><div id=\"ibox_close\" style=\"float:right;\">";
-	strHTML +=	"<a id=\"ibox_close_a\" href=\"javascript:void(null);\" >CLOSE</a></div>";
-	strHTML +=  "<div id=\"ibox_footer\">&nbsp;</div></div></div></div>";
+	if (with_footer) {
+		strHTML +=	"<div id=\"ibox_footer_wrapper\"><div id=\"ibox_close\" style=\"float:right;\">";
+		strHTML +=	"<a id=\"ibox_close_a\" href=\"javascript:void(null);\" >CLOSE</a></div>";
+		strHTML +=  "<div id=\"ibox_footer\">&nbsp;</div></div>";
+	}
+	strHTML +=  "</div></div>";
 
 	var docBody = document.getElementsByTagName("body")[0];
 	var ibox = document.createElement("div");
@@ -118,8 +120,9 @@ showIbox = function(url,title,params) {
 	var ibox_type = 0;
 												
 	// set title here
-	var ibox_footer = getElem('ibox_footer');
-	if(title != "") {ibox_footer.innerHTML = title;} else {ibox_footer.innerHTML = "&nbsp;";}
+	if (ibox_footer = getElem('ibox_footer')) {
+		if(title != "") {ibox_footer.innerHTML = title;} else {ibox_footer.innerHTML = "&nbsp;";}
+	}
 	
 	// file checking code borrowed from thickbox
 	var urlString = /\.jpg|\.jpeg|\.png|\.gif|\.html|\.htm|\.php|\.cfm|\.asp|\.aspx|\.jsp|\.jst|\.rb|\.rhtml|\.txt/g;
@@ -251,9 +254,10 @@ showIbox = function(url,title,params) {
 	setIboxOpacity = setOpacity;
 	for (var i=0;i<=ibox_op_level;i++) {setTimeout("setIboxOpacity('ibox_wrapper',"+i+")",10*i);}
 
+	if (ibox_close_a = getElem("ibox_close_a"))
 	if(ibox_type == 2 || ibox_type == 3) {
-		ibox.onclick = null;getElem("ibox_close_a").onclick = function() {hideIbox();}
-	} else {ibox.onclick = hideIbox;getElem("ibox_close_a").onclick = null;}
+		ibox.onclick = null;ibox_close_a.onclick = function() {hideIbox();}
+	} else {ibox.onclick = hideIbox;ibox_close_a.onclick = null;}
 
 	return true;
 }
@@ -420,4 +424,4 @@ function addEvent(obj, evType, fn){
    return false; 
  } 
 }
-addEvent(window, 'load', init_ibox);
+

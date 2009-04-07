@@ -42,7 +42,8 @@ module Innerfusion
    end 
    
    # add this in your layout file which will add in the necessary files that you need for ibox
-   def iboxify_page
+   def iboxify_page(with_footer=false)
+     footer = "true" ? with_footer : "false"
      content = stylesheet_link_tag("ibox/ibox")
      content << "\n#{javascript_include_tag('ibox/ibox')}"
      content
