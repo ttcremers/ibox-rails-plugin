@@ -200,7 +200,7 @@ showIbox = function(url,title,params) {
 			posToCenter(ibox); 	
 			ibox.style.visibility = "visible";
 			
-			getElem('ibox_content').style.overflow = "auto";
+			//getElem('ibox_content').style.overflow = "auto";
 			
 			var elemSrcId = url.substr(url.indexOf("#") + 1,1000);
 			
@@ -230,7 +230,7 @@ showIbox = function(url,title,params) {
 					ibox.style.visibility = "hidden";
 					posToCenter(ibox); 	
 					ibox.style.visibility = "visible";
-					getElem('ibox_content').style.overflow = "auto";
+					//getElem('ibox_content').style.overflow = "auto";
 					
 					var response = http.responseText;
 					setIBoxContent(response);
@@ -356,7 +356,7 @@ getElementSize = function(elem) {
 setIBoxContent = function(str) {
 	clearIboxContent();
 	var e = getElem('ibox_content');
-	e.style.overflow = "auto";
+	//e.style.overflow = "auto";
 	e.innerHTML = str;
 	
 }
